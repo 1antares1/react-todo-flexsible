@@ -7,6 +7,15 @@ import { TodoConfig, TodoData } from "../data/models";
 import { StorageKeys } from "../data/enums";
 
 export class ToDoDataService {
+
+    private static _isLoading : boolean = true;
+    public static get isLoading() : boolean {
+        return this._isLoading;
+    }
+    public static set isLoading(v : boolean) {
+        this._isLoading = v;
+    }
+
     public  static getCurrentPersistentData(): TodoData[] {
         try {
             const data = localStorage.getItem(StorageKeys.TODO_MAIN_DATA);
@@ -44,6 +53,12 @@ export class ToDoDataService {
 
         defaultColumnIds.forEach((elem: string, idx: number) => {
             TodoInitialConfig[defaultColumnIds[idx]].columns.elements = currentData.filter(x => x.status === idx);
+            TodoInitialConfig[defaultColumnIds[idx]].columns.elements = TodoInitialConfig[defaultColumnIds[idx]].columns.elements.filter((val: TodoData) => {
+                if (currentData.some((val2: TodoData) => val.id === val2.id)) {
+                    return val;
+                }
+                return null;
+            })
         });
 
         if (syncData) {
@@ -51,6 +66,27 @@ export class ToDoDataService {
         }
 
         return TodoInitialConfig;
+    }
+
+    public static filterItems(term: string): TodoConfig {
+        let persistentData = this.getCurrentPersistentData();
+
+        if (!persistentData) {
+            return ToDoDataService.refreshData(persistentData);
+        }
+
+        const finalTerm = term.toLocaleLowerCase();
+        persistentData = persistentData.filter((val: TodoData) => {
+            if (val.assignee?.toLowerCase().indexOf(finalTerm) !== -1
+                || val.task_name?.toLowerCase().indexOf(finalTerm) !== -1
+                || (val.tags && val.tags?.toLowerCase().indexOf(finalTerm) !== -1)
+            ) {
+                return val;
+            }
+            return null;
+        });
+
+        return ToDoDataService.refreshData(persistentData);
     }
 
     public static getSystemUsers(): any[] {

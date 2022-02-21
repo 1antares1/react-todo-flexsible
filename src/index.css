@@ -14,3 +14,9 @@ code {
     content:" *";
     color: red;
 }
+
+.filter-tasks-container {
+    width: 730px;
+    margin-left: 15px;
+    margin-top: 30px;
+}

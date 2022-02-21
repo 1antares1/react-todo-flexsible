@@ -103,8 +103,8 @@ const ToDoElement = ({
         columnId,
         data,
         columnIndex,
-        ...props
-    }: { columnId: string, data: { columns: TodoColumns }, columnIndex: number }): JSX.Element => {
+        props
+    }: { columnId: string, data: { columns: TodoColumns }, columnIndex: number, props: {reload: () => void } }): JSX.Element => {
     const [showTaskFormRegisterState, setTaskFormRegisterState] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const refreshList = (currentData: TodoData[], result: TodoData[]) =>{
@@ -121,6 +121,15 @@ const ToDoElement = ({
         setTimeout(() => {
             setIsLoading(false);
         }, 5000);
+
+        props.reload = () => {
+            alert("Reload here!");
+            setIsLoading(true);
+
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 0);
+        }
       return () => {
         // to do
       }

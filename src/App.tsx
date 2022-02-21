@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
  * Own
  */
 // models
-import { TodoInitialData, StorageKeys } from  "./data";
+import { TodoInitialData, TodoConfig, StorageKeys } from  "./data";
 
 // assets
 import "./App.css";
@@ -16,6 +16,7 @@ import { ToDoDataService } from "./providers";
 
 // elements
 import ToDo from "./view/Todo";
+import { TaskTableSearch } from "./view";
 
 const LogoCard = styled.section`
     display: flex;
@@ -46,6 +47,7 @@ const LogoCard = styled.section`
 
 function App() {
     const [showTaskTableDataState, setShowTaskTableDataState] = useState(false);
+    const [refreshTaskChildElements, setRefreshTaskChildElements] = useState(false);
 
     useEffect(() => {
         const i18nTexts = [
@@ -66,6 +68,7 @@ function App() {
                 }
 
                 setShowTaskTableDataState(true);
+                ToDoDataService.isLoading = !showTaskTableDataState;
             };
 
             if (!persistentData?.length) {
@@ -81,14 +84,21 @@ function App() {
         return () => {
             // Cleanup executed!
         };
-    }, []);
+    });
 
     return (
         <div className="App">
             <LogoCard>
                 <img src={logo} className="app-logo" alt="Flexsible Company" />
             </LogoCard>
-            { showTaskTableDataState && <ToDo />}
+            {   showTaskTableDataState && <TaskTableSearch props={{ onResultsChange: (result: TodoConfig) => {
+                    setRefreshTaskChildElements(true);
+                    setTimeout(() => {
+                        setRefreshTaskChildElements(false);
+                    }, 1000);
+                }}} />
+            }
+            { showTaskTableDataState && <ToDo props={ { reload: () =>  setRefreshTaskChildElements(refreshTaskChildElements) }} />}
         </div>
     );
 }

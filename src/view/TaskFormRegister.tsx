@@ -51,7 +51,7 @@ export const TaskFormRegister = ({ props, item, index, payload }: { props: {
                 <Form>
                     <Form.Group className="mb-3" controlId="formBasicTitle">
                         <Form.Label className="field-required">Title</Form.Label>
-                        <Form.Control type="text" placeholder="Describe the task title" {...register("task_name")} autoFocus={true} required={true} />
+                        <Form.Control type="text" placeholder="Describe the task title" {...register("task_name")} autoFocus={true} required={true} maxLength={35} />
                         <Form.Text className="text-muted">
                             Only the title, below you can describe the task.
                         </Form.Text>

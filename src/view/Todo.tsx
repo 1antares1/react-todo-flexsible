@@ -23,7 +23,7 @@ const TaskColumnStyle = styled.div`
     min-height: 75vh;
 `;
 
-const ToDo = () : JSX.Element => {
+const ToDo = ({ props }: { props: { reload: () => void }}) : JSX.Element => {
     const [firstColumns, setColumns] = useState(TodoInitialConfig);
 
     const onDragEnd = (result: DragUpdate, columns: TodoConfig, setColumnsState: (value: React.SetStateAction<TodoConfig>) => void) => {
@@ -41,8 +41,6 @@ const ToDo = () : JSX.Element => {
             let newFullData: TodoData[] = [];
 
             destinationElements.splice(destination.index, 0, deleted);
-            // CHANGE STATUS_FIELD TO DELETED.status
-            // MERGE ALL columns.elemens and Replace Info with new Method (addOrPlace)
 
             deleted.status = destinationColumn.columns.columnId
 
@@ -107,6 +105,7 @@ const ToDo = () : JSX.Element => {
                             columnIndex={idx}
                             columnId={columnId}
                             data={data}
+                            props={ { reload: props.reload } }
                         />
                     )}
                 </TaskColumnStyle>
