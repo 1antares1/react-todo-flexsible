@@ -131,7 +131,9 @@ export const TaskTableCard = ({ item, index, onChange, ...props }
                                             }
                                         },
                                         onNo: () => setTaskFormRegisterState(false)
-                                    }} index={String(item.id)} payload={prepareItem(item)}></TaskFormRegister>
+                                    }}
+                                    index={String(item.id)}
+                                    payload={prepareItem(item)}></TaskFormRegister>
                                 </span>
                                 <span>
                                     <button type="button" className="task-delete-action" onClick={() => {

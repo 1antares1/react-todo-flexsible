@@ -36,7 +36,7 @@ export const TaskTableSearch = ({ props }: { props: { onResultsChange: (result: 
     return (
         <div className="filter-tasks-container">
             <Form>
-                <Form.Group className="mb-3" controlId="formSearchItems">
+                <Form.Group className="mb-3" controlId="formSearchItems" data-testid="formSearchItems">
                     <Form.Control
                         type="text"
                         placeholder="Type any to filter tasks..."

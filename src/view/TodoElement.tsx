@@ -107,14 +107,17 @@ const ToDoElement = ({
     }: { columnId: string, data: { columns: TodoColumns }, columnIndex: number, props: {reload: () => void } }): JSX.Element => {
     const [showTaskFormRegisterState, setTaskFormRegisterState] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const refreshList = (currentData: TodoData[], result: TodoData[]) =>{
-        currentData = result;
-        ToDoDataService.refreshData(currentData);
-
+    const runReload = () => {
         setIsLoading(true);
         setTimeout(() => {
             setIsLoading(false);
         }, 0);
+    };
+
+    const refreshList = (currentData: TodoData[], result: TodoData[]) =>{
+        currentData = result;
+        ToDoDataService.refreshData(currentData);
+        runReload();
     };
 
     useEffect(() => {
@@ -123,17 +126,12 @@ const ToDoElement = ({
         }, 5000);
 
         props.reload = () => {
-            alert("Reload here!");
-            setIsLoading(true);
-
-            setTimeout(() => {
-                setIsLoading(false);
-            }, 0);
+            runReload();
         }
       return () => {
         // to do
       }
-    }, []);
+    });
 
     return(<Droppable key={columnId} droppableId={columnId}>
             {(provided) => (

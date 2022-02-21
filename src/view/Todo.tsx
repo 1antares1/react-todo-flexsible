@@ -65,7 +65,7 @@ const ToDo = ({ props }: { props: { reload: () => void }}) : JSX.Element => {
             });
 
             Object.keys(columns).forEach((val: string) => {
-                if ((columns[val].columns?.elements?.length)) {
+                if (columns[val].columns?.elements?.length) {
                     newFullData = newFullData.concat(...columns[val].columns.elements);
                 }
             });
